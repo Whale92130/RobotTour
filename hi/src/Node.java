@@ -1,11 +1,12 @@
+import java.util.ArrayList;
 
 public class Node {
 	boolean visisted;
 	public int x;
 	public int y;
-
-	Node() {
-		
+	int index;
+	Node(int x, int y, int index) {
+		this.index = index;
 	}
 
 	public boolean wasVisited() {
@@ -26,5 +27,13 @@ public class Node {
 	}
 	public void setY(int y) {
 		this.y = y;
+	}
+	public int getIndex() {
+		return index;
+	}
+	public ArrayList<Integer> getNeighbors() {
+		Maze maze = new Maze();
+		return maze.getNeighbors(x, y);
+		
 	}
 }

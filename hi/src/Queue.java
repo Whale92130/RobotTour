@@ -10,6 +10,9 @@ public class Queue {
 	void enqueue(int num) {
 		arr.add(num);
 	}
+	void enqueueAll(ArrayList<Integer> list) {
+		arr.addAll(list);
+	}
 	int dequeue() {
 		return arr.remove(0);
 	}
