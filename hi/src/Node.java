@@ -7,6 +7,8 @@ public class Node {
 	int index;
 	Node(int x, int y, int index) {
 		this.index = index;
+		this.x = x;
+		this.y = y;
 	}
 
 	public boolean wasVisited() {
