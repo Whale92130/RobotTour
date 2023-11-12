@@ -5,53 +5,58 @@ public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Maze maze = new Maze();
+		System.out.println(maze.getNeighbors(0, 0));
 		Node node = new Node(0,0,0); 
-		ArrayList<Node> graph = reconstructPath(0, 5, bfs(0,5));
+		ArrayList<Integer> graph = reconstructPath(0, 5, bfs(0,5));
 		for (int i = 0; i < graph.size(); i++) {
-			System.out.println("prev " + i  + ": " + graph.get(i).index);
+			System.out.println("prev " + i  + ": " + graph.get(i));
 		}
 	}
 
-	public static ArrayList<Node> bfs(int start, int end) {
+	public static Integer[] bfs(int start, int end) {
 		Maze maze = new Maze();
-		ArrayList<Integer> visited = new ArrayList<Integer>();
 		Queue queue = new Queue();
 		queue.enqueue(start);
-		visited.add(start);
-		maze.setNodeVisited(start, true);
-		ArrayList<Node> prev = new ArrayList<Node>();
-		System.out.println(prev.size());
+		Boolean[] visited = new Boolean[16];
+		for (int i = 0; i<visited.length; i++) {
+			visited[i] = false;
+		}
+		visited[start] = true;
+		Integer[] prev = new Integer[16];
+		for (int i = 0; i<prev.length; i++) {
+			prev[i] = -1;
+		}
 		while (!queue.isEmpty()) {
 	
-			Node node = maze.getNodeByIndex(queue.dequeue());
-			ArrayList<Integer> nei = node.getNeighbors();
+			int node = queue.dequeue();
+			ArrayList<Integer> nei = maze.getNodeByIndex(node).getNeighbors();
 
 			for (int i = 0; i < nei.size(); i++) {
-				if (maze.getNodeByIndex(nei.get(i)).visisted == false) {
+				if (visited[i] == false) {
 					queue.enqueue(nei.get(i));
-					visited.add(nei.get(i));
-					node.setVisited(true);
-					prev.add(node);
+					visited[i] = true;
+					prev[i] = node;
 				}
 			}
-			System.out.println("");
-			for (int i = 0; i < prev.size(); i++) {
-				System.out.println("prev " + i  + ": " + prev.get(i).index);
-			}
+			
+		}
+		System.out.println("");
+		for (int i = 0; i < prev.length; i++) {
+			System.out.println("prev " + i  + ": " + prev[i]);
 		}
 		return prev;
 	}
-	public static ArrayList<Node> reconstructPath(int start, int end, ArrayList<Node> prev) {
-		ArrayList<Node> path = new ArrayList<Node>();
+	public static ArrayList<Integer> reconstructPath(int start, int end, Integer[] prev) {
+		ArrayList<Integer> path = new ArrayList<Integer>();
 		Maze maze = new Maze();
-		for (int i = 0; i<prev.size(); i++) {
-		Node at = maze.getNodeByIndex(end);
-		if (at != null) {	
-			at = prev.get(end);
-		}
+		int at = end;
+		while(at!=-1) {
+			at=prev[at];
+			path.add(at);
 		}
 		Collections.reverse(path);
-		if (path.get(0).getIndex() == start) {
+		if (path.get(0) == start) {
 			return path;
 		}
 		else {
